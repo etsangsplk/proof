@@ -48,12 +48,12 @@ func TestEqual(t *testing.T) {
 			is.lax = true
 
 			is.Equal(test.x, test.y)
-			if is.t.Failed() {
+			if is.T.Failed() {
 				t.Fatalf("'%s' arguments should have been considered equal", test.name)
 			}
 
 			is.NotEqual(test.x, test.y)
-			if !is.t.Failed() {
+			if !is.T.Failed() {
 				t.Fatalf("'%s' arguments should not have been considered equal", test.name)
 			}
 		})
@@ -91,12 +91,12 @@ func TestNotEqual(t *testing.T) {
 			is.lax = true
 
 			is.NotEqual(test.x, test.y)
-			if is.t.Failed() {
+			if is.T.Failed() {
 				t.Fatalf("'%s' arguments should have been considered not equal", test.name)
 			}
 
 			is.Equal(test.x, test.y)
-			if !is.t.Failed() {
+			if !is.T.Failed() {
 				t.Fatalf("'%s' arguments should not have been considered equal", test.name)
 			}
 		})
@@ -141,7 +141,7 @@ func TestVarious(t *testing.T) {
 		lax.Equal(1, 1)
 		lax.Equal(1, 2)
 	})
-	if !is.t.Failed() {
+	if !is.T.Failed() {
 		t.Fatalf("lax call should triggered failed state")
 	}
 }

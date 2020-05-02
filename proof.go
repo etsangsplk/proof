@@ -20,130 +20,130 @@ type T interface {
 }
 
 type Prover struct {
-	t   T
+	T   T
 	lax bool
 }
 
 func New(t T) *Prover {
-	return &Prover{t: t}
+	return &Prover{T: t}
 }
 
 func (p *Prover) Equal(x, y interface{}) {
 	if !equal(x, y) {
-		s := failureStringWithDiff(p.t, "Objects should be equal", x, y)
-		p.t.Helper()
+		s := failureStringWithDiff(p.T, "Objects should be equal", x, y)
+		p.T.Helper()
 		if !p.lax {
-			p.t.Fatal(s)
+			p.T.Fatal(s)
 		} else {
-			p.t.Error(s)
+			p.T.Error(s)
 		}
 	}
 }
 
 func (p *Prover) NotEqual(x, y interface{}) {
 	if equal(x, y) {
-		s := failureStringWithValues(p.t, "Objects should not be equal", x, y)
-		p.t.Helper()
+		s := failureStringWithValues(p.T, "Objects should not be equal", x, y)
+		p.T.Helper()
 		if !p.lax {
-			p.t.Fatal(s)
+			p.T.Fatal(s)
 		} else {
-			p.t.Error(s)
+			p.T.Error(s)
 		}
 	}
 }
 
 func (p *Prover) Err(err error) {
 	if isNil(err) {
-		s := failureStringWithValue(p.t, "Error should not be nil", err)
-		p.t.Helper()
+		s := failureStringWithValue(p.T, "Error should not be nil", err)
+		p.T.Helper()
 		if !p.lax {
-			p.t.Fatal(s)
+			p.T.Fatal(s)
 		} else {
-			p.t.Error(s)
+			p.T.Error(s)
 		}
 	}
 }
 
 func (p *Prover) NotErr(err error) {
 	if !isNil(err) {
-		s := failureStringWithValue(p.t, "Error should be nil", err)
-		p.t.Helper()
+		s := failureStringWithValue(p.T, "Error should be nil", err)
+		p.T.Helper()
 		if !p.lax {
-			p.t.Fatal(s)
+			p.T.Fatal(s)
 		} else {
-			p.t.Error(s)
+			p.T.Error(s)
 		}
 	}
 }
 
 func (p *Prover) Nil(o interface{}) {
 	if !isNil(o) {
-		s := failureStringWithValue(p.t, "Object should be nil", o)
-		p.t.Helper()
+		s := failureStringWithValue(p.T, "Object should be nil", o)
+		p.T.Helper()
 		if !p.lax {
-			p.t.Fatal(s)
+			p.T.Fatal(s)
 		} else {
-			p.t.Error(s)
+			p.T.Error(s)
 		}
 	}
 }
 
 func (p *Prover) NotNil(o interface{}) {
 	if isNil(o) {
-		s := failureStringWithValue(p.t, "Object should not be nil", o)
-		p.t.Helper()
+		s := failureStringWithValue(p.T, "Object should not be nil", o)
+		p.T.Helper()
 		if !p.lax {
-			p.t.Fatal(s)
+			p.T.Fatal(s)
 		} else {
-			p.t.Error(s)
+			p.T.Error(s)
 		}
 	}
 }
 
 func (p *Prover) True(b bool) {
 	if !b {
-		s := failureStringWithValue(p.t, "Bool should be true", b)
-		p.t.Helper()
+		s := failureStringWithValue(p.T, "Bool should be true", b)
+		p.T.Helper()
 		if !p.lax {
-			p.t.Fatal(s)
+			p.T.Fatal(s)
 		} else {
-			p.t.Error(s)
+			p.T.Error(s)
 		}
 	}
 }
 
 func (p *Prover) False(b bool) {
 	if b {
-		s := failureStringWithValue(p.t, "Bool should not be true", b)
-		p.t.Helper()
+		s := failureStringWithValue(p.T, "Bool should not be true", b)
+		p.T.Helper()
 		if !p.lax {
-			p.t.Fatal(s)
+			p.T.Fatal(s)
 		} else {
-			p.t.Error(s)
+			p.T.Error(s)
 		}
 	}
 }
 
 func (p *Prover) Zero(o interface{}) {
 	if !isZero(o) {
-		s := failureStringWithValue(p.t, "Object should be zero value", o)
-		p.t.Helper()
+		s := failureStringWithValue(p.T, "Object should be zero value", o)
+		p.T.Helper()
 		if !p.lax {
-			p.t.Fatal(s)
+			p.T.Fatal(s)
 		} else {
-			p.t.Error(s)
+			p.T.Error(s)
 		}
 	}
 }
 
 func (p *Prover) NotZero(o interface{}) {
 	if isZero(o) {
-		s := failureStringWithValue(p.t, "Object should not be zero value", o)
-		p.t.Helper()
+		s := failureStringWithValue(p.T, "Object should not be zero value", o)
+		p.T.Helper()
 		if !p.lax {
-			p.t.Fatal(s)
+			p.T.Fatal(s)
 		} else {
-			p.t.Error(s)
+			p.T.Error(s)
 		}
 	}
 }
@@ -152,7 +152,7 @@ func (p *Prover) ContainedBySlice(object interface{}, slice interface{}) {
 	sv := reflect.ValueOf(slice)
 	sk := sv.Kind()
 	if sk != reflect.Slice && sk != reflect.Array {
-		p.t.Fatalf("ContainedBySlice received non-slice argument")
+		p.T.Fatalf("ContainedBySlice received non-slice argument")
 	}
 	for i := 0; i < sv.Len(); i++ {
 		if equal(sv.Index(i).Interface(), object) {
@@ -160,12 +160,12 @@ func (p *Prover) ContainedBySlice(object interface{}, slice interface{}) {
 		}
 	}
 
-	fs := failureStringWithValues(p.t, "Slice does not contain object", slice, object)
-	p.t.Helper()
+	fs := failureStringWithValues(p.T, "Slice does not contain object", slice, object)
+	p.T.Helper()
 	if !p.lax {
-		p.t.Fatal(fs)
+		p.T.Fatal(fs)
 	} else {
-		p.t.Error(fs)
+		p.T.Error(fs)
 	}
 }
 
@@ -177,17 +177,17 @@ func (p *Prover) Len(o interface{}, length int) {
 
 	var s string
 	if !hasLen {
-		s = failureStringWithValue(p.t, "Object was not of type array, slice, map or chan", o)
+		s = failureStringWithValue(p.T, "Object was not of type array, slice, map or chan", o)
 	} else {
 		s = fmt.Sprintf("Expected object of length %d to be length %d", oLen, length)
-		s = failureStringWithValue(p.t, s, o)
+		s = failureStringWithValue(p.T, s, o)
 	}
 
-	p.t.Helper()
+	p.T.Helper()
 	if !p.lax {
-		p.t.Fatal(s)
+		p.T.Fatal(s)
 	} else {
-		p.t.Error(s)
+		p.T.Error(s)
 	}
 }
 
@@ -195,11 +195,11 @@ func (p *Prover) Panic(f func()) {
 	defer func() {
 		r := recover()
 		if r == nil {
-			p.t.Helper()
+			p.T.Helper()
 			if !p.lax {
-				p.t.Fatal("Expected function to panic")
+				p.T.Fatal("Expected function to panic")
 			} else {
-				p.t.Error("Expected function to panic")
+				p.T.Error("Expected function to panic")
 			}
 		}
 	}()
@@ -211,11 +211,11 @@ func (p *Prover) Retry(duration time.Duration, f func() bool) {
 	for {
 		select {
 		case <-after:
-			p.t.Helper()
+			p.T.Helper()
 			if !p.lax {
-				p.t.Fatalf("Expected function to return true within duration %v", duration)
+				p.T.Fatalf("Expected function to return true within duration %v", duration)
 			} else {
-				p.t.Error("Expected function to panic")
+				p.T.Error("Expected function to panic")
 			}
 			return
 		default:
@@ -229,14 +229,14 @@ func (p *Prover) Retry(duration time.Duration, f func() bool) {
 
 func (p *Prover) Lax(fn func(lax *Prover)) {
 	lax := &Prover{
-		t:   p.t,
+		T:   p.T,
 		lax: true,
 	}
 
 	fn(lax)
 
-	if lax.t.Failed() {
-		p.t.FailNow()
+	if lax.T.Failed() {
+		p.T.FailNow()
 	}
 }
 
