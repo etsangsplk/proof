@@ -44,16 +44,16 @@ func TestEqual(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			is := New(&nopT{})
-			is.lax = true
+			prove := New(&nopT{})
+			prove.lax = true
 
-			is.Equal(test.x, test.y)
-			if is.T.Failed() {
+			prove.Equal(test.x, test.y)
+			if prove.T.Failed() {
 				t.Fatalf("'%s' arguments should have been considered equal", test.name)
 			}
 
-			is.NotEqual(test.x, test.y)
-			if !is.T.Failed() {
+			prove.NotEqual(test.x, test.y)
+			if !prove.T.Failed() {
 				t.Fatalf("'%s' arguments should not have been considered equal", test.name)
 			}
 		})
@@ -87,16 +87,16 @@ func TestNotEqual(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			is := New(&nopT{})
-			is.lax = true
+			prove := New(&nopT{})
+			prove.lax = true
 
-			is.NotEqual(test.x, test.y)
-			if is.T.Failed() {
+			prove.NotEqual(test.x, test.y)
+			if prove.T.Failed() {
 				t.Fatalf("'%s' arguments should have been considered not equal", test.name)
 			}
 
-			is.Equal(test.x, test.y)
-			if !is.T.Failed() {
+			prove.Equal(test.x, test.y)
+			if !prove.T.Failed() {
 				t.Fatalf("'%s' arguments should not have been considered equal", test.name)
 			}
 		})
@@ -107,43 +107,43 @@ func TestNotEqual(t *testing.T) {
 func TestVarious(t *testing.T) {
 	t.Parallel()
 
-	is := New(t)
+	prove := New(t)
 
 	val := 10
 	pVal := &val
 
-	is.EqualsAny(val, 10, 20)
+	prove.EqualsAny(val, 10, 20)
 
-	is.Err(errors.New("error"))
-	is.NotErr(nil)
-	is.Nil(nil)
-	is.NotNil(pVal)
-	is.True(true)
-	is.False(false)
-	is.Zero("")
-	is.NotZero("not zero")
+	prove.Err(errors.New("error"))
+	prove.NotErr(nil)
+	prove.Nil(nil)
+	prove.NotNil(pVal)
+	prove.True(true)
+	prove.False(false)
+	prove.Zero("")
+	prove.NotZero("not zero")
 
 	slice := []string{"one", "two"}
 	object := "two"
-	is.ContainedBySlice(object, slice)
+	prove.ContainedBySlice(object, slice)
 
-	is.Len([]string{"len"}, 1)
-	is.Panic(func() { panic("now is the perfect time to panic!") })
+	prove.Len([]string{"len"}, 1)
+	prove.Panic(func() { panic("now is the perfect time to panic!") })
 
 	start := time.Now()
-	is.Retry(200*time.Millisecond, func() bool {
+	prove.Retry(200*time.Millisecond, func() bool {
 		if time.Since(start) < 50*time.Millisecond {
 			return false
 		}
 		return true
 	})
 
-	is = New(&nopT{})
-	is.Lax(func(lax *Prover) {
+	prove = New(&nopT{})
+	prove.Lax(func(lax *Prover) {
 		lax.Equal(1, 1)
 		lax.Equal(1, 2)
 	})
-	if !is.T.Failed() {
+	if !prove.T.Failed() {
 		t.Fatalf("lax call should triggered failed state")
 	}
 }
