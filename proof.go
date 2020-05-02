@@ -40,6 +40,26 @@ func (p *Prover) Equal(x, y interface{}) {
 	}
 }
 
+func (p *Prover) EqualsAny(x interface{}, y ...interface{}) {
+	var found bool
+	for i := range y {
+		if equal(x, y[i]) {
+			found = true
+			break
+		}
+	}
+
+	if !found {
+		s := failureStringWithDiff(p.T, "One of the list of objects should be equal to the first argument", x, y)
+		p.T.Helper()
+		if !p.lax {
+			p.T.Fatal(s)
+		} else {
+			p.T.Error(s)
+		}
+	}
+}
+
 func (p *Prover) NotEqual(x, y interface{}) {
 	if equal(x, y) {
 		s := failureStringWithValues(p.T, "Objects should not be equal", x, y)

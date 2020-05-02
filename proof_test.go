@@ -112,6 +112,8 @@ func TestVarious(t *testing.T) {
 	val := 10
 	pVal := &val
 
+	is.EqualsAny(val, 10, 20)
+
 	is.Err(errors.New("error"))
 	is.NotErr(nil)
 	is.Nil(nil)
