@@ -207,4 +207,10 @@ func TestConvertibleTypesShouldBeComparable(t *testing.T) {
 	m2 := map[key]int{key{s: "test"}: 1}
 
 	prove.Equal(m1, m2)
+
+	s3 := &s1
+
+	prove.NotEqual(s3, nil)
+
+	prove.Equal(nil, nil)
 }

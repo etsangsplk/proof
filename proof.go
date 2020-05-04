@@ -371,6 +371,10 @@ func equateConvertibleTypes() cmp.Option {
 }
 
 func shouldTreatAsConvertibleTypes(x, y interface{}) bool {
+	if x == nil || y == nil {
+		return false
+	}
+
 	xt := reflect.TypeOf(x)
 	yt := reflect.TypeOf(y)
 
