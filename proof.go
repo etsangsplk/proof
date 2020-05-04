@@ -276,7 +276,7 @@ func Recover(t T) {
 
 func equal(x, y interface{}) bool {
 	allowAllUnexported := cmp.Exporter(func(reflect.Type) bool { return true })
-	return cmp.Equal(x, y, equateConvertibleNumbers(), allowAllUnexported)
+	return cmp.Equal(x, y, equateConvertibleTypes(), allowAllUnexported)
 }
 
 func getLen(o interface{}) (int, bool) {
@@ -366,47 +366,23 @@ func diff(x, y interface{}) string {
 	return cmp.Diff(x, y)
 }
 
-func equateConvertibleNumbers() cmp.Option {
-	return cmp.FilterValues(shouldTreatAsConvertibleNumbers, cmp.Comparer(equateAfterConverting))
+func equateConvertibleTypes() cmp.Option {
+	return cmp.FilterValues(shouldTreatAsConvertibleTypes, cmp.Comparer(equateAfterConverting))
 }
 
-func shouldTreatAsConvertibleNumbers(x, y interface{}) bool {
+func shouldTreatAsConvertibleTypes(x, y interface{}) bool {
 	xv := reflect.ValueOf(x)
 	yv := reflect.ValueOf(y)
 
-	if xv.Kind() == yv.Kind() {
+	if xv.Type().Name() == yv.Type().Name() {
 		return false
 	}
 
-	if !isConvertibleNumber(xv) || !isConvertibleNumber(yv) {
-		return false
-	}
 	if !xv.Type().ConvertibleTo(yv.Type()) {
 		return false
 	}
 
 	return true
-}
-
-var convertibleNumberKinds = map[reflect.Kind]struct{}{
-	reflect.Int:     {},
-	reflect.Int8:    {},
-	reflect.Int16:   {},
-	reflect.Int32:   {},
-	reflect.Int64:   {},
-	reflect.Uint:    {},
-	reflect.Uint8:   {},
-	reflect.Uint16:  {},
-	reflect.Uint32:  {},
-	reflect.Uint64:  {},
-	reflect.Uintptr: {},
-	reflect.Float32: {},
-	reflect.Float64: {},
-}
-
-func isConvertibleNumber(v reflect.Value) bool {
-	_, exists := convertibleNumberKinds[v.Kind()]
-	return exists
 }
 
 func equateAfterConverting(x, y interface{}) bool {

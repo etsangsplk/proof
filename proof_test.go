@@ -187,3 +187,24 @@ func TestUnexported(t *testing.T) {
 	prove.Equal(left, right)
 
 }
+
+func TestConvertibleTypesShouldBeComparable(t *testing.T) {
+	t.Parallel()
+
+	prove := New(t)
+
+	type customString string
+
+	s1 := customString("test")
+	s2 := "test"
+
+	prove.Equal(s1, s2)
+
+	type key struct{ s string }
+	type customMap map[key]int
+
+	m1 := customMap{key{s: "test"}: 1}
+	m2 := map[key]int{key{s: "test"}: 1}
+
+	prove.Equal(m1, m2)
+}
