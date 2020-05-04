@@ -163,3 +163,27 @@ func TestRecover(t *testing.T) {
 
 	panic("recover me!")
 }
+
+func TestUnexported(t *testing.T) {
+	t.Parallel()
+
+	prove := New(t)
+
+	type unexported struct {
+		Exported   string
+		unexported string
+	}
+
+	left := unexported{
+		Exported:   "exported",
+		unexported: "unexported",
+	}
+
+	right := unexported{
+		Exported:   "exported",
+		unexported: "unexported",
+	}
+
+	prove.Equal(left, right)
+
+}

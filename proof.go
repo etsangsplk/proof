@@ -275,7 +275,8 @@ func Recover(t T) {
 }
 
 func equal(x, y interface{}) bool {
-	return cmp.Equal(x, y, equateConvertibleNumbers())
+	allowAllUnexported := cmp.Exporter(func(reflect.Type) bool { return true })
+	return cmp.Equal(x, y, equateConvertibleNumbers(), allowAllUnexported)
 }
 
 func getLen(o interface{}) (int, bool) {
