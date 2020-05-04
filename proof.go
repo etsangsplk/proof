@@ -371,14 +371,14 @@ func equateConvertibleTypes() cmp.Option {
 }
 
 func shouldTreatAsConvertibleTypes(x, y interface{}) bool {
-	xv := reflect.ValueOf(x)
-	yv := reflect.ValueOf(y)
+	xt := reflect.TypeOf(x)
+	yt := reflect.TypeOf(y)
 
-	if xv.Type().Name() == yv.Type().Name() {
+	if xt.Name() == yt.Name() {
 		return false
 	}
 
-	if !xv.Type().ConvertibleTo(yv.Type()) {
+	if !xt.ConvertibleTo(yt) {
 		return false
 	}
 
