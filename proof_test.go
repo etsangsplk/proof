@@ -214,3 +214,14 @@ func TestConvertibleTypesShouldBeComparable(t *testing.T) {
 
 	prove.Equal(nil, nil)
 }
+
+func TestEnsureConversionFunctionIsSymmetric(t *testing.T) {
+	t.Parallel()
+
+	prove := New(t)
+
+	x := "1"
+	y := 1
+
+	prove.NotEqual(x, y)
+}

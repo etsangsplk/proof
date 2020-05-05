@@ -382,7 +382,7 @@ func shouldTreatAsConvertibleTypes(x, y interface{}) bool {
 		return false
 	}
 
-	if !xt.ConvertibleTo(yt) {
+	if !xt.ConvertibleTo(yt) || !yt.ConvertibleTo(xt) {
 		return false
 	}
 
